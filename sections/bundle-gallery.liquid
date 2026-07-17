@@ -1,0 +1,645 @@
+{% liquid
+  assign loading = 'lazy'
+  assign fetch_priority = 'auto'
+
+  if section.index == 1
+    assign loading = 'eager'
+    assign fetch_priority = 'high'
+  endif
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section
+  id="bundle-gallery-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-testid="bundle-gallery-{{ section.id }}"
+>
+  {% if section.settings.heading != blank %}
+    <h2 class="bundle-gallery__heading">{{ section.settings.heading | escape }}</h2>
+  {% endif %}
+
+  <div class="bundle-gallery__layout bundle-gallery__layout--{{ section.settings.mobile_layout }}">
+    <div class="bundle-gallery__column bundle-gallery__column--left">
+      {% if section.settings.left_link != blank %}
+        <a
+          class="bundle-gallery__area-link"
+          href="{{ section.settings.left_link }}"
+          aria-label="{{ section.settings.left_link_label | escape | default: 'Left bundle gallery' }}"
+        >
+      {% else %}
+        <div class="bundle-gallery__area-link">
+      {% endif %}
+
+      {% if section.settings.show_sale_badge %}
+        <span class="bundle-gallery__badge">{{ section.settings.sale_badge_text | escape }}</span>
+      {% endif %}
+
+      <div class="bundle-gallery__collage" aria-hidden="true">
+        {% liquid
+          assign left_images = 'left_image_1,left_image_2,left_image_3,left_image_4' | split: ','
+        %}
+        {% for image_key in left_images %}
+          {% assign image_obj = section.settings[image_key] %}
+          <div class="bundle-gallery__cell">
+            {% if image_obj != blank %}
+              {{
+                image_obj
+                | image_url: width: 1400
+                | image_tag:
+                  widths: '320, 480, 640, 800, 1000, 1200, 1400',
+                  sizes: '(min-width: 990px) 16vw, (min-width: 750px) 45vw, 90vw',
+                  width: image_obj.width,
+                  height: image_obj.height,
+                  alt: image_obj.alt,
+                  class: 'bundle-gallery__image',
+                  loading: loading,
+                  fetchpriority: fetch_priority
+              }}
+            {% else %}
+              <div class="bundle-gallery__placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if section.settings.left_overlay_heading != blank or section.settings.left_overlay_subtitle != blank %}
+        <div class="bundle-gallery__overlay">
+          {% if section.settings.left_overlay_heading != blank %}
+            <p class="bundle-gallery__overlay-heading">{{ section.settings.left_overlay_heading | escape }}</p>
+          {% endif %}
+          {% if section.settings.left_overlay_subtitle != blank %}
+            <p class="bundle-gallery__overlay-subtitle">{{ section.settings.left_overlay_subtitle | escape }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.left_link != blank %}
+        </a>
+      {% else %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="bundle-gallery__column bundle-gallery__column--center">
+      {% if section.settings.center_link != blank %}
+        <a
+          class="bundle-gallery__area-link"
+          href="{{ section.settings.center_link }}"
+          aria-label="{{ section.settings.center_link_label | escape | default: 'Center bundle gallery' }}"
+        >
+      {% else %}
+        <div class="bundle-gallery__area-link">
+      {% endif %}
+
+      {% if section.settings.show_sale_badge %}
+        <span class="bundle-gallery__badge">{{ section.settings.sale_badge_text | escape }}</span>
+      {% endif %}
+
+      <div class="bundle-gallery__center-media">
+        {% if section.settings.center_image != blank %}
+          {{
+            section.settings.center_image
+            | image_url: width: 2000
+            | image_tag:
+              widths: '500, 700, 900, 1200, 1600, 2000',
+              sizes: '(min-width: 990px) 33vw, (min-width: 750px) 90vw, 90vw',
+              width: section.settings.center_image.width,
+              height: section.settings.center_image.height,
+              alt: section.settings.center_image.alt,
+              class: 'bundle-gallery__image',
+              loading: loading,
+              fetchpriority: fetch_priority
+          }}
+        {% else %}
+          <div class="bundle-gallery__placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+        {% endif %}
+      </div>
+
+      {% if section.settings.center_link != blank %}
+        </a>
+      {% else %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="bundle-gallery__column bundle-gallery__column--right">
+      {% if section.settings.right_link != blank %}
+        <a
+          class="bundle-gallery__area-link"
+          href="{{ section.settings.right_link }}"
+          aria-label="{{ section.settings.right_link_label | escape | default: 'Right bundle gallery' }}"
+        >
+      {% else %}
+        <div class="bundle-gallery__area-link">
+      {% endif %}
+
+      {% if section.settings.show_sale_badge %}
+        <span class="bundle-gallery__badge">{{ section.settings.sale_badge_text | escape }}</span>
+      {% endif %}
+
+      <div class="bundle-gallery__collage" aria-hidden="true">
+        {% liquid
+          assign right_images = 'right_image_1,right_image_2,right_image_3,right_image_4' | split: ','
+        %}
+        {% for image_key in right_images %}
+          {% assign image_obj = section.settings[image_key] %}
+          <div class="bundle-gallery__cell">
+            {% if image_obj != blank %}
+              {{
+                image_obj
+                | image_url: width: 1400
+                | image_tag:
+                  widths: '320, 480, 640, 800, 1000, 1200, 1400',
+                  sizes: '(min-width: 990px) 16vw, (min-width: 750px) 45vw, 90vw',
+                  width: image_obj.width,
+                  height: image_obj.height,
+                  alt: image_obj.alt,
+                  class: 'bundle-gallery__image',
+                  loading: loading,
+                  fetchpriority: fetch_priority
+              }}
+            {% else %}
+              <div class="bundle-gallery__placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if section.settings.right_overlay_heading != blank or section.settings.right_overlay_subtitle != blank %}
+        <div class="bundle-gallery__overlay">
+          {% if section.settings.right_overlay_heading != blank %}
+            <p class="bundle-gallery__overlay-heading">{{ section.settings.right_overlay_heading | escape }}</p>
+          {% endif %}
+          {% if section.settings.right_overlay_subtitle != blank %}
+            <p class="bundle-gallery__overlay-subtitle">{{ section.settings.right_overlay_subtitle | escape }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.right_link != blank %}
+        </a>
+      {% else %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #bundle-gallery-{{ section.id }} {
+    --bundle-gallery-gap-desktop: {{ section.settings.desktop_gap }}px;
+    --bundle-gallery-gap-mobile: {{ section.settings.mobile_gap }}px;
+    --bundle-gallery-height: {{ section.settings.desktop_height }}px;
+    --bundle-gallery-mobile-height: {{ section.settings.mobile_height }}px;
+    --bundle-gallery-mobile-card-width: {{ section.settings.mobile_card_width }}vw;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__heading {
+    margin: 0 0 20px;
+    text-align: center;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__layout {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--bundle-gallery-gap-desktop);
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__column {
+    min-width: 0;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__area-link {
+    position: relative;
+    display: block;
+    height: var(--bundle-gallery-height);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__cell {
+    overflow: hidden;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__collage {
+    display: grid;
+    height: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: var(--bundle-gallery-gap-desktop);
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__center-media {
+    height: 100%;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__image,
+  #bundle-gallery-{{ section.id }} .bundle-gallery__placeholder,
+  #bundle-gallery-{{ section.id }} .bundle-gallery__placeholder svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__image {
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.45s ease, filter 0.45s ease;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__center-media,
+  #bundle-gallery-{{ section.id }} .bundle-gallery__cell {
+    position: relative;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__center-media::after,
+  #bundle-gallery-{{ section.id }} .bundle-gallery__cell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    #bundle-gallery-{{ section.id }} .bundle-gallery__area-link:hover .bundle-gallery__image {
+      transform: scale(1.04);
+      filter: saturate(1.05) contrast(1.04);
+    }
+
+    #bundle-gallery-{{ section.id }} .bundle-gallery__area-link:hover .bundle-gallery__center-media::after,
+    #bundle-gallery-{{ section.id }} .bundle-gallery__area-link:hover .bundle-gallery__cell::after {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #bundle-gallery-{{ section.id }} .bundle-gallery__image,
+    #bundle-gallery-{{ section.id }} .bundle-gallery__center-media::after,
+    #bundle-gallery-{{ section.id }} .bundle-gallery__cell::after {
+      transition: none;
+    }
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__placeholder svg {
+    background: rgba(var(--color-foreground-rgb), 0.06);
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
+    background: #000;
+    color: #fff;
+    padding: 8px 10px;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__overlay {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    width: min(78%, 360px);
+    text-align: center;
+    padding: 12px 14px;
+    background: rgba(0, 0, 0, 0.66);
+    color: #fff;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__overlay-heading {
+    margin: 0;
+    font-size: clamp(28px, 2.8vw, 54px);
+    line-height: 1;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  #bundle-gallery-{{ section.id }} .bundle-gallery__overlay-subtitle {
+    margin: 6px 0 0;
+    font-size: clamp(14px, 1.2vw, 24px);
+    line-height: 1.2;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 989px) {
+    #bundle-gallery-{{ section.id }} .bundle-gallery__layout {
+      grid-template-columns: 1fr;
+      gap: var(--bundle-gallery-gap-mobile);
+    }
+
+    #bundle-gallery-{{ section.id }} .bundle-gallery__area-link {
+      height: var(--bundle-gallery-mobile-height);
+    }
+
+    #bundle-gallery-{{ section.id }} .bundle-gallery__collage {
+      gap: var(--bundle-gallery-gap-mobile);
+    }
+
+    #bundle-gallery-{{ section.id }} .bundle-gallery__layout--swipe {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    #bundle-gallery-{{ section.id }} .bundle-gallery__layout--swipe::-webkit-scrollbar {
+      display: none;
+    }
+
+    #bundle-gallery-{{ section.id }} .bundle-gallery__layout--swipe .bundle-gallery__column {
+      flex: 0 0 var(--bundle-gallery-mobile-card-width);
+      scroll-snap-align: start;
+    }
+
+    #bundle-gallery-{{ section.id }} .bundle-gallery__layout--stack {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Bundle Gallery",
+  "tag": "section",
+  "class": "section-bundle-gallery",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Bundle Gallery"
+    },
+    {
+      "type": "header",
+      "content": "Left column images"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image_1",
+      "label": "Left image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image_2",
+      "label": "Left image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image_3",
+      "label": "Left image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image_4",
+      "label": "Left image 4"
+    },
+    {
+      "type": "text",
+      "id": "left_overlay_heading",
+      "label": "Left overlay heading",
+      "default": "BUNDLE DEAL"
+    },
+    {
+      "type": "text",
+      "id": "left_overlay_subtitle",
+      "label": "Left overlay subtitle",
+      "default": "SEA BALI STRAIGHT"
+    },
+    {
+      "type": "url",
+      "id": "left_link",
+      "label": "Left area link"
+    },
+    {
+      "type": "text",
+      "id": "left_link_label",
+      "label": "Left area accessible label",
+      "default": "Open left bundle collection"
+    },
+    {
+      "type": "header",
+      "content": "Center column image"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_image",
+      "label": "Center image"
+    },
+    {
+      "type": "url",
+      "id": "center_link",
+      "label": "Center area link"
+    },
+    {
+      "type": "text",
+      "id": "center_link_label",
+      "label": "Center area accessible label",
+      "default": "Open center featured product"
+    },
+    {
+      "type": "header",
+      "content": "Right column images"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image_1",
+      "label": "Right image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image_2",
+      "label": "Right image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image_3",
+      "label": "Right image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image_4",
+      "label": "Right image 4"
+    },
+    {
+      "type": "text",
+      "id": "right_overlay_heading",
+      "label": "Right overlay heading",
+      "default": "BUNDLE DEAL"
+    },
+    {
+      "type": "text",
+      "id": "right_overlay_subtitle",
+      "label": "Right overlay subtitle",
+      "default": "SEA ZEN STRAIGHT"
+    },
+    {
+      "type": "url",
+      "id": "right_link",
+      "label": "Right area link"
+    },
+    {
+      "type": "text",
+      "id": "right_link_label",
+      "label": "Right area accessible label",
+      "default": "Open right bundle collection"
+    },
+    {
+      "type": "header",
+      "content": "Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sale_badge_text",
+      "label": "Sale badge text",
+      "default": "Sale"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page"
+        },
+        {
+          "value": "full-width",
+          "label": "Full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "label": "Desktop gap",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop section height",
+      "min": 360,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "default": 640
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        {
+          "value": "swipe",
+          "label": "Horizontal swipe"
+        },
+        {
+          "value": "stack",
+          "label": "Stack"
+        }
+      ],
+      "default": "stack"
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Mobile gap",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile image height",
+      "min": 220,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_width",
+      "label": "Swipe card width",
+      "min": 70,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 85,
+      "visible_if": "{{ section.settings.mobile_layout == 'swipe' }}"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle Gallery",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

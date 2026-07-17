@@ -1,0 +1,513 @@
+<section
+  id="custom-faq-{{ section.id }}"
+  class="custom-faq color-{{ section.settings.color_scheme }}"
+  style="
+    --custom-faq-bg: {{ section.settings.background_color }};
+    --custom-faq-text: {{ section.settings.text_color }};
+    --custom-faq-divider: {{ section.settings.divider_color }};
+    --custom-faq-icon: {{ section.settings.icon_color }};
+    --custom-faq-max-width: {{ section.settings.max_content_width }}px;
+    --custom-faq-padding-top: {{ section.settings.padding_top }}px;
+    --custom-faq-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+  data-custom-faq-section
+  data-section-id="{{ section.id }}"
+  data-allow-multiple="{{ section.settings.allow_multiple_open_items }}"
+  data-open-first="{{ section.settings.open_first_item_by_default }}"
+>
+  <div class="custom-faq__inner">
+    {% if section.settings.heading != blank %}
+      <h2 class="custom-faq__heading custom-faq__heading--{{ section.settings.heading_size }}">
+        {{ section.settings.heading | escape }}
+      </h2>
+    {% endif %}
+
+    <div class="custom-faq__list" role="list">
+      {% for block in section.blocks %}
+        {% assign panel_id = 'custom-faq-panel-' | append: section.id | append: '-' | append: block.id %}
+        {% assign button_id = 'custom-faq-button-' | append: section.id | append: '-' | append: block.id %}
+        <article
+          class="custom-faq__item"
+          role="listitem"
+          data-faq-item
+          data-default-open="{{ block.settings.open_by_default }}"
+          {{ block.shopify_attributes }}
+        >
+          <h3 class="custom-faq__question-wrap">
+            <button
+              type="button"
+              id="{{ button_id }}"
+              class="custom-faq__question"
+              aria-expanded="false"
+              aria-controls="{{ panel_id }}"
+              data-faq-trigger
+            >
+              <span class="custom-faq__question-text">{{ block.settings.question | escape }}</span>
+              <span class="custom-faq__icon" aria-hidden="true">
+                <span class="custom-faq__icon-line custom-faq__icon-line--h"></span>
+                <span class="custom-faq__icon-line custom-faq__icon-line--v"></span>
+              </span>
+            </button>
+          </h3>
+
+          <div
+            id="{{ panel_id }}"
+            class="custom-faq__answer-wrap"
+            role="region"
+            aria-labelledby="{{ button_id }}"
+            hidden
+            data-faq-panel
+          >
+            <div class="custom-faq__answer rte">
+              {{ block.settings.answer }}
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #custom-faq-{{ section.id }} {
+    background: var(--custom-faq-bg);
+    color: var(--custom-faq-text);
+    padding-top: var(--custom-faq-padding-top);
+    padding-bottom: var(--custom-faq-padding-bottom);
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__inner {
+    width: min(100%, var(--custom-faq-max-width));
+    margin: 0 auto;
+    padding-inline: 20px;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__heading {
+    margin: 0 0 28px;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__heading--small {
+    font-size: clamp(28px, 3.2vw, 42px);
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__heading--medium {
+    font-size: clamp(34px, 4.1vw, 56px);
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__heading--large {
+    font-size: clamp(40px, 5.2vw, 72px);
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__list {
+    border-top: 1px solid var(--custom-faq-divider);
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__item {
+    border-bottom: 1px solid var(--custom-faq-divider);
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__question-wrap {
+    margin: 0;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__question {
+    width: 100%;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    text-align: left;
+    padding: 22px 0;
+    cursor: pointer;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__question:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__question-text {
+    font-size: clamp(20px, 2vw, 34px);
+    line-height: 1.35;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__icon {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--custom-faq-icon);
+    border-radius: 50%;
+    position: relative;
+    flex: 0 0 auto;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__icon-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: var(--custom-faq-icon);
+    transform: translate(-50%, -50%);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__icon-line--h {
+    width: 12px;
+    height: 1px;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__icon-line--v {
+    width: 1px;
+    height: 12px;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__item.is-open .custom-faq__icon-line--v {
+    opacity: 0;
+    transform: translate(-50%, -50%) scaleY(0.2);
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__answer-wrap {
+    overflow: hidden;
+    height: 0;
+    transition: height 0.32s ease;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__answer {
+    padding: 0 0 22px;
+    max-width: 74ch;
+    font-size: clamp(16px, 1.15vw, 19px);
+    line-height: 1.6;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__answer > *:first-child {
+    margin-top: 0;
+  }
+
+  #custom-faq-{{ section.id }} .custom-faq__answer > *:last-child {
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    #custom-faq-{{ section.id }} .custom-faq__inner {
+      padding-inline: 16px;
+    }
+
+    #custom-faq-{{ section.id }} .custom-faq__heading {
+      margin-bottom: 20px;
+    }
+
+    #custom-faq-{{ section.id }} .custom-faq__question {
+      padding: 16px 0;
+      gap: 14px;
+    }
+
+    #custom-faq-{{ section.id }} .custom-faq__question-text {
+      font-size: clamp(18px, 5.2vw, 24px);
+      line-height: 1.4;
+    }
+
+    #custom-faq-{{ section.id }} .custom-faq__icon {
+      width: 26px;
+      height: 26px;
+    }
+
+    #custom-faq-{{ section.id }} .custom-faq__answer {
+      padding-bottom: 18px;
+      font-size: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #custom-faq-{{ section.id }} .custom-faq__answer-wrap,
+    #custom-faq-{{ section.id }} .custom-faq__icon-line {
+      transition: none;
+    }
+  }
+{% endstyle %}
+
+<script>
+  (() => {
+    if (!window.__customFaqRegistry) {
+      window.__customFaqRegistry = new Map();
+    }
+
+    const registry = window.__customFaqRegistry;
+
+    const setExpandedState = (item, expand) => {
+      const trigger = item.querySelector('[data-faq-trigger]');
+      const panel = item.querySelector('[data-faq-panel]');
+      if (!trigger || !panel) return;
+
+      item.classList.toggle('is-open', expand);
+      trigger.setAttribute('aria-expanded', expand ? 'true' : 'false');
+
+      if (expand) {
+        panel.hidden = false;
+        panel.style.height = `${panel.scrollHeight}px`;
+      } else {
+        panel.style.height = `${panel.scrollHeight}px`;
+        requestAnimationFrame(() => {
+          panel.style.height = '0px';
+        });
+      }
+    };
+
+    const finalizePanelTransition = (event) => {
+      const panel = event.currentTarget;
+      const item = panel.closest('[data-faq-item]');
+      if (!item) return;
+
+      const isOpen = item.classList.contains('is-open');
+      if (isOpen) {
+        panel.style.height = 'auto';
+      } else {
+        panel.hidden = true;
+      }
+    };
+
+    const teardownSection = (sectionId) => {
+      const existing = registry.get(sectionId);
+      if (!existing) return;
+
+      existing.panels.forEach((panel) => {
+        panel.removeEventListener('transitionend', finalizePanelTransition);
+      });
+
+      existing.items.forEach((item) => {
+        const trigger = item.querySelector('[data-faq-trigger]');
+        if (trigger && item.__faqClickHandler) {
+          trigger.removeEventListener('click', item.__faqClickHandler);
+          delete item.__faqClickHandler;
+        }
+      });
+
+      registry.delete(sectionId);
+    };
+
+    const openItem = (item, allItems, allowMultiple) => {
+      if (!allowMultiple) {
+        allItems.forEach((other) => {
+          if (other !== item) {
+            setExpandedState(other, false);
+          }
+        });
+      }
+
+      setExpandedState(item, true);
+    };
+
+    const initSection = (sectionEl) => {
+      if (!(sectionEl instanceof HTMLElement)) return;
+
+      const sectionId = sectionEl.dataset.sectionId;
+      if (!sectionId) return;
+
+      teardownSection(sectionId);
+
+      const allowMultiple = sectionEl.dataset.allowMultiple === 'true';
+      const openFirstByDefault = sectionEl.dataset.openFirst === 'true';
+      const items = Array.from(sectionEl.querySelectorAll('[data-faq-item]'));
+      const panels = Array.from(sectionEl.querySelectorAll('[data-faq-panel]'));
+
+      if (!items.length) return;
+
+      let openedByBlock = false;
+
+      items.forEach((item, index) => {
+        const trigger = item.querySelector('[data-faq-trigger]');
+        const panel = item.querySelector('[data-faq-panel]');
+        if (!trigger || !panel) return;
+
+        panel.style.height = '0px';
+        panel.hidden = true;
+        item.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+
+        const isBlockDefaultOpen = item.dataset.defaultOpen === 'true';
+        if (isBlockDefaultOpen && (!openedByBlock || allowMultiple)) {
+          openItem(item, items, allowMultiple);
+          openedByBlock = true;
+        }
+
+        if (!openedByBlock && openFirstByDefault && index === 0) {
+          openItem(item, items, allowMultiple);
+          openedByBlock = true;
+        }
+
+        const clickHandler = () => {
+          const currentlyOpen = item.classList.contains('is-open');
+
+          if (currentlyOpen) {
+            setExpandedState(item, false);
+            return;
+          }
+
+          openItem(item, items, allowMultiple);
+        };
+
+        item.__faqClickHandler = clickHandler;
+        trigger.addEventListener('click', clickHandler);
+      });
+
+      panels.forEach((panel) => {
+        panel.addEventListener('transitionend', finalizePanelTransition);
+      });
+
+      registry.set(sectionId, { items, panels });
+    };
+
+    const initWithin = (scope) => {
+      if (!(scope instanceof Element || scope instanceof Document)) return;
+      scope.querySelectorAll('[data-custom-faq-section]').forEach(initSection);
+    };
+
+    if (!window.__customFaqEventsBound) {
+      document.addEventListener('shopify:section:load', (event) => {
+        initWithin(event.target);
+      });
+
+      document.addEventListener('shopify:section:unload', (event) => {
+        const sectionEl = event.target.querySelector('[data-custom-faq-section]');
+        if (sectionEl && sectionEl.dataset.sectionId) {
+          teardownSection(sectionEl.dataset.sectionId);
+        }
+      });
+
+      window.__customFaqEventsBound = true;
+    }
+
+    initWithin(document);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom FAQ",
+  "tag": "section",
+  "class": "section-custom-faq",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FAQS"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#efefef"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1f1f1f"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#d6d6d6"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "range",
+      "id": "max_content_width",
+      "label": "Maximum content width",
+      "min": 700,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1260
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_multiple_open_items",
+      "label": "Allow multiple open items",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_item_by_default",
+      "label": "Open first item by default",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How do I find the right length of hair?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Use our length chart and styling guide to match your preferred look and maintenance routine.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Custom FAQ"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,320 @@
+{% liquid
+  assign loading = 'lazy'
+  assign fetch_priority = 'auto'
+
+  if section.index == 1
+    assign loading = 'eager'
+    assign fetch_priority = 'high'
+  endif
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section
+  id="pure-collection-banner-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-testid="pure-collection-banner-{{ section.id }}"
+>
+  <div
+    class="pure-collection-banner pure-collection-banner--{{ section.settings.card_position }}"
+    style="--pure-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}; --pure-height: {{ section.settings.image_height }}svh;"
+  >
+    <div class="pure-collection-banner__media" aria-hidden="true">
+      {% if section.settings.background_image != blank %}
+        {{
+          section.settings.background_image
+          | image_url: width: 3200
+          | image_tag:
+            widths: '768, 1024, 1366, 1600, 1920, 2400, 3200',
+            sizes: '(min-width: 1200px) 100vw, 100vw',
+            width: section.settings.background_image.width,
+            height: section.settings.background_image.height,
+            alt: section.settings.heading,
+            class: 'pure-collection-banner__image',
+            loading: loading,
+            fetchpriority: fetch_priority
+        }}
+      {% else %}
+        <div class="pure-collection-banner__placeholder">{{ 'hero-apparel-1' | placeholder_svg_tag }}</div>
+      {% endif %}
+    </div>
+
+    <div class="pure-collection-banner__overlay"></div>
+
+    <div class="pure-collection-banner__card">
+      <p class="pure-collection-banner__label">{{ section.settings.label | escape }}</p>
+
+      {% if section.settings.heading != blank %}
+        <h2 class="pure-collection-banner__heading">{{ section.settings.heading | escape }}</h2>
+      {% endif %}
+
+      {% if section.settings.description != blank %}
+        <div class="pure-collection-banner__description rte">
+          <p>{{ section.settings.description | escape }}</p>
+        </div>
+      {% endif %}
+
+      {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+        <a class="pure-collection-banner__button" href="{{ section.settings.button_link }}">
+          {{ section.settings.button_text | escape }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner {
+    position: relative;
+    min-height: clamp(520px, var(--pure-height), 980px);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner--left-center {
+    justify-content: flex-start;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner--center {
+    justify-content: center;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__media,
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__image,
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__placeholder,
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__placeholder svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__image {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__placeholder svg {
+    background: rgba(var(--color-foreground-rgb), 0.08);
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / var(--pure-overlay-opacity));
+    pointer-events: none;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__card {
+    position: relative;
+    z-index: 2;
+    width: min(420px, calc(100% - 48px));
+    margin: 0 32px;
+    padding: clamp(24px, 2.6vw, 40px);
+    background: rgb(255 255 255 / 96%);
+    color: rgb(var(--color-foreground-rgb));
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__label {
+    margin: 0 0 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__heading {
+    margin: 0 0 14px;
+    font-size: clamp(1.7rem, 2.7vw, 2.35rem);
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__description {
+    margin: 0 0 24px;
+    max-width: 32ch;
+    line-height: 1.55;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__description p {
+    margin: 0;
+  }
+
+  #pure-collection-banner-{{ section.id }} .pure-collection-banner__button {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.74rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  @media screen and (max-width: 749px) {
+    #pure-collection-banner-{{ section.id }} .pure-collection-banner {
+      min-height: auto;
+      display: grid;
+      grid-template-rows: minmax(300px, 48svh) auto;
+      align-items: stretch;
+      justify-content: stretch;
+    }
+
+    #pure-collection-banner-{{ section.id }} .pure-collection-banner__media,
+    #pure-collection-banner-{{ section.id }} .pure-collection-banner__overlay {
+      position: relative;
+      grid-row: 1;
+      min-height: 300px;
+    }
+
+    #pure-collection-banner-{{ section.id }} .pure-collection-banner__card {
+      grid-row: 2;
+      width: 100%;
+      margin: 0;
+      padding: 24px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Pure Collection Hero Banner",
+  "tag": "section",
+  "class": "section-pure-collection-banner",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Small label",
+      "default": "OUR HAIR"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "PURE COLLECTION"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Pure is our flagship collection of genuine virgin remy hair from the temples of India-completely natural and untouched."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "SHOP PURE NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "card_position",
+      "label": "Card position",
+      "options": [
+        {
+          "value": "right-center",
+          "label": "Right center"
+        },
+        {
+          "value": "left-center",
+          "label": "Left center"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "right-center"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 70,
+      "step": 1,
+      "unit": "%",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 70
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page"
+        },
+        {
+          "value": "full-width",
+          "label": "Full"
+        }
+      ],
+      "default": "full-width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pure Collection Hero Banner",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

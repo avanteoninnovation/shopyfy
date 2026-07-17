@@ -1,0 +1,980 @@
+{% style %}
+  #sea-bundles-{{ section.id }} {
+    padding: {{ section.settings.padding_top }}px 20px
+             {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background_color }};
+  }
+
+  #sea-bundles-{{ section.id }} .sea-bundle-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-bundle-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-bundle-title {
+    margin: 0 0 14px;
+    color: {{ section.settings.heading_color }};
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(27px, 3vw, 38px);
+    font-weight: 400;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-countdown {
+    margin: 6px 0 22px;
+    text-align: center;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-countdown[hidden] {
+    display: none;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-countdown__display {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-countdown__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 66px;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-countdown__value {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 58px;
+    min-height: 48px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: {{ section.settings.timer_background_color }};
+    color: {{ section.settings.timer_text_color }};
+    font-size: clamp(30px, 3.6vw, 46px);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-countdown__label {
+    margin-top: 6px;
+    color: #303030;
+    font-size: 11px;
+    line-height: 1.1;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-countdown__separator {
+    color: #232323;
+    font-size: clamp(30px, 3.5vw, 42px);
+    line-height: 1;
+    font-weight: 700;
+    transform: translateY(-4px);
+  }
+
+  #sea-bundles-{{ section.id }} .sea-countdown__timezone {
+    margin: 10px 0 0;
+    color: #3a3a3a;
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: 0.4px;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-countdown__expired {
+    margin: 8px 0 0;
+    color: #232323;
+    font-size: 15px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-view-all {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    min-height: 34px;
+    padding: 8px 18px;
+    border: 1px solid #dedede;
+    color: #111;
+    background: #fff;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 3px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: 0.25s ease;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-view-all:hover {
+    color: #fff;
+    background: #111;
+    border-color: #111;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-bundle-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: {{ section.settings.grid_gap }}px;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-bundle-card {
+    min-width: 0;
+    text-align: center;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-bundle-image-wrap {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: #f2f2f2;
+    text-decoration: none;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-bundle-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5.35;
+    object-fit: cover;
+    transition: transform 0.55s ease;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-bundle-card:hover .sea-bundle-image {
+    transform: scale(1.025);
+  }
+
+  #sea-bundles-{{ section.id }} .sea-sale-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
+    padding: 7px 10px;
+    color: #fff;
+    background: #000;
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-image-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    width: min(78%, 330px);
+    padding: 11px 15px 9px;
+    color: {{ section.settings.overlay_text_color }};
+    background: {{ section.settings.overlay_background }};
+    border: 1px solid rgba(255,255,255,0.45);
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-overlay-heading {
+    margin: 0;
+    font-size: clamp(25px, 2.8vw, 42px);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-overlay-subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 9px;
+    font-size: clamp(11px, 1.2vw, 16px);
+    line-height: 1.2;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-overlay-subtitle::before,
+  #sea-bundles-{{ section.id }} .sea-overlay-subtitle::after {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-product-information {
+    padding: 11px 5px 0;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-product-title {
+    display: block;
+    margin: 0 0 7px;
+    color: {{ section.settings.product_title_color }};
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-product-title:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-price-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+    color: #555;
+    font-size: 12px;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-compare-price {
+    text-decoration: line-through;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-current-price {
+    color: #444;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-saving {
+    color: #777;
+  }
+
+  #sea-bundles-{{ section.id }} .sea-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 5.35;
+    background: #eee;
+  }
+
+  @media screen and (max-width: 989px) {
+    #sea-bundles-{{ section.id }} .sea-bundle-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #sea-bundles-{{ section.id }} {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+
+    #sea-bundles-{{ section.id }} .sea-bundle-header {
+      margin-bottom: 26px;
+    }
+
+    #sea-bundles-{{ section.id }} .sea-countdown {
+      margin-bottom: 16px;
+    }
+
+    #sea-bundles-{{ section.id }} .sea-countdown__display {
+      gap: 5px;
+    }
+
+    #sea-bundles-{{ section.id }} .sea-countdown__unit {
+      min-width: 48px;
+    }
+
+    #sea-bundles-{{ section.id }} .sea-countdown__value {
+      min-width: 44px;
+      min-height: 38px;
+      border-radius: 8px;
+      font-size: clamp(24px, 7vw, 32px);
+      padding: 4px 7px;
+    }
+
+    #sea-bundles-{{ section.id }} .sea-countdown__separator {
+      font-size: 28px;
+      transform: translateY(-2px);
+    }
+
+    #sea-bundles-{{ section.id }} .sea-countdown__label {
+      font-size: 9px;
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+
+    #sea-bundles-{{ section.id }} .sea-bundle-grid {
+      {% if section.settings.mobile_slider %}
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        gap: 12px;
+        margin-right: -14px;
+        padding-right: 14px;
+      {% else %}
+        grid-template-columns: 1fr;
+      {% endif %}
+    }
+
+    {% if section.settings.mobile_slider %}
+      #sea-bundles-{{ section.id }} .sea-bundle-grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      #sea-bundles-{{ section.id }} .sea-bundle-card {
+        flex: 0 0 86%;
+        scroll-snap-align: start;
+      }
+    {% endif %}
+
+    #sea-bundles-{{ section.id }} .sea-image-overlay {
+      width: 80%;
+    }
+
+    #sea-bundles-{{ section.id }} .sea-overlay-heading {
+      font-size: 28px;
+    }
+
+    #sea-bundles-{{ section.id }} .sea-overlay-subtitle {
+      font-size: 11px;
+    }
+  }
+{% endstyle %}
+
+<section id="sea-bundles-{{ section.id }}">
+  <div class="sea-bundle-container">
+
+    <div class="sea-bundle-header">
+      {% if section.settings.heading != blank %}
+        <h2 class="sea-bundle-title">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.enable_countdown %}
+        <div
+          id="sea-countdown-{{ section.id }}"
+          class="sea-countdown"
+          data-sea-countdown
+          data-section-id="{{ section.id }}"
+          data-end-date="{{ section.settings.countdown_end_date | escape }}"
+          data-end-time="{{ section.settings.countdown_end_time | escape }}"
+          data-hide-days-zero="{{ section.settings.hide_days_when_zero }}"
+          data-hide-on-expiry="{{ section.settings.hide_timer_on_expiry }}"
+        >
+          <div class="sea-countdown__display" data-sea-countdown-display>
+            <div class="sea-countdown__unit" data-sea-unit="days">
+              <span class="sea-countdown__value" data-sea-value="days">00</span>
+              <span class="sea-countdown__label">{{ section.settings.days_label | escape }}</span>
+            </div>
+            <span class="sea-countdown__separator" data-sea-separator="days">:</span>
+
+            <div class="sea-countdown__unit" data-sea-unit="hours">
+              <span class="sea-countdown__value" data-sea-value="hours">00</span>
+              <span class="sea-countdown__label">{{ section.settings.hours_label | escape }}</span>
+            </div>
+            <span class="sea-countdown__separator">:</span>
+
+            <div class="sea-countdown__unit" data-sea-unit="minutes">
+              <span class="sea-countdown__value" data-sea-value="minutes">00</span>
+              <span class="sea-countdown__label">{{ section.settings.minutes_label | escape }}</span>
+            </div>
+            <span class="sea-countdown__separator">:</span>
+
+            <div class="sea-countdown__unit" data-sea-unit="seconds">
+              <span class="sea-countdown__value" data-sea-value="seconds">00</span>
+              <span class="sea-countdown__label">{{ section.settings.seconds_label | escape }}</span>
+            </div>
+          </div>
+
+          <p class="sea-countdown__expired" data-sea-expired hidden>
+            {{ section.settings.expired_message | escape }}
+          </p>
+
+          {% if section.settings.timezone_label != blank %}
+            <p class="sea-countdown__timezone">{{ section.settings.timezone_label | escape }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.button_label != blank %}
+        <a
+          class="sea-view-all"
+          href="{{ section.settings.button_link | default: '#' }}"
+        >
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="sea-bundle-grid">
+      {% for block in section.blocks %}
+        {% assign selected_product = block.settings.product %}
+
+        {% if selected_product != blank %}
+          {% assign product_url = selected_product.url %}
+          {% assign product_title = selected_product.title %}
+          {% assign product_price = selected_product.price %}
+          {% assign product_compare_price = selected_product.compare_at_price %}
+        {% else %}
+          {% assign product_url = block.settings.custom_link %}
+          {% assign product_title = block.settings.custom_product_title %}
+          {% assign product_price = block.settings.custom_price | times: 100 %}
+          {% assign product_compare_price = block.settings.custom_compare_price | times: 100 %}
+        {% endif %}
+
+        <article
+          class="sea-bundle-card"
+          {{ block.shopify_attributes }}
+        >
+          <a
+            class="sea-bundle-image-wrap"
+            href="{{ product_url | default: '#' }}"
+            aria-label="{{ product_title | escape }}"
+          >
+            {% if block.settings.show_sale_badge %}
+              <span class="sea-sale-badge">
+                {{ block.settings.sale_label }}
+              </span>
+            {% endif %}
+
+            {% if block.settings.image != blank %}
+              {{
+                block.settings.image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'sea-bundle-image',
+                  loading: 'lazy',
+                  widths: '400, 600, 800, 1000, 1200',
+                  sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 86vw',
+                  alt: block.settings.image.alt
+              }}
+            {% elsif selected_product.featured_image != blank %}
+              {{
+                selected_product.featured_image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'sea-bundle-image',
+                  loading: 'lazy',
+                  widths: '400, 600, 800, 1000, 1200',
+                  sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 86vw',
+                  alt: selected_product.featured_image.alt
+              }}
+            {% else %}
+              <div class="sea-placeholder">
+                {{ 'product-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+
+            <div class="sea-image-overlay">
+              <div class="sea-overlay-heading">
+                {{ block.settings.overlay_heading }}
+              </div>
+
+              {% if block.settings.overlay_subtitle != blank %}
+                <div class="sea-overlay-subtitle">
+                  {{ block.settings.overlay_subtitle }}
+                </div>
+              {% endif %}
+            </div>
+          </a>
+
+          <div class="sea-product-information">
+            {% if product_title != blank %}
+              <a class="sea-product-title" href="{{ product_url | default: '#' }}">
+                {{ product_title }}
+              </a>
+            {% endif %}
+
+            {% if selected_product != blank %}
+              <div class="sea-price-row">
+                {% if product_compare_price > product_price %}
+                  <span class="sea-compare-price">
+                    {{ product_compare_price | money }}
+                  </span>
+                {% endif %}
+
+                <span class="sea-current-price">
+                  from {{ product_price | money }}
+                </span>
+
+                {% if product_compare_price > product_price %}
+                  {% assign amount_saved = product_compare_price | minus: product_price %}
+                  <span class="sea-saving">
+                    Save {{ amount_saved | money }}
+                  </span>
+                {% endif %}
+              </div>
+            {% else %}
+              <div class="sea-price-row">
+                {% if block.settings.custom_compare_price > block.settings.custom_price %}
+                  <span class="sea-compare-price">
+                    {{ product_compare_price | money }}
+                  </span>
+                {% endif %}
+
+                {% if block.settings.custom_price != blank %}
+                  <span class="sea-current-price">
+                    from {{ product_price | money }}
+                  </span>
+                {% endif %}
+
+                {% if block.settings.custom_compare_price > block.settings.custom_price %}
+                  {% assign custom_saved = product_compare_price | minus: product_price %}
+                  <span class="sea-saving">
+                    Save {{ custom_saved | money }}
+                  </span>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (() => {
+    if (!window.__seaCountdownRegistry) {
+      window.__seaCountdownRegistry = new Map();
+    }
+
+    const registry = window.__seaCountdownRegistry;
+
+    const pad = (value) => String(value).padStart(2, '0');
+
+    const parseTarget = (dateValue, timeValue) => {
+      if (!dateValue || !timeValue) return null;
+      const normalizedTime = timeValue.length === 5 ? `${timeValue}:00` : timeValue;
+      const target = new Date(`${dateValue}T${normalizedTime}`);
+      if (Number.isNaN(target.getTime())) return null;
+      return target;
+    };
+
+    const teardown = (sectionId) => {
+      const existing = registry.get(sectionId);
+      if (existing && existing.intervalId) {
+        clearInterval(existing.intervalId);
+      }
+      registry.delete(sectionId);
+    };
+
+    const initializeCountdown = (countdownEl) => {
+      if (!countdownEl) return;
+
+      const sectionId = countdownEl.dataset.sectionId;
+      if (!sectionId) return;
+
+      teardown(sectionId);
+      countdownEl.hidden = false;
+
+      const targetDate = parseTarget(countdownEl.dataset.endDate, countdownEl.dataset.endTime);
+      const hideDaysWhenZero = countdownEl.dataset.hideDaysZero === 'true';
+      const hideTimerOnExpiry = countdownEl.dataset.hideOnExpiry === 'true';
+
+      const displayEl = countdownEl.querySelector('[data-sea-countdown-display]');
+      const expiredEl = countdownEl.querySelector('[data-sea-expired]');
+      const daysUnitEl = countdownEl.querySelector('[data-sea-unit="days"]');
+      const daysSeparatorEl = countdownEl.querySelector('[data-sea-separator="days"]');
+
+      const valueEls = {
+        days: countdownEl.querySelector('[data-sea-value="days"]'),
+        hours: countdownEl.querySelector('[data-sea-value="hours"]'),
+        minutes: countdownEl.querySelector('[data-sea-value="minutes"]'),
+        seconds: countdownEl.querySelector('[data-sea-value="seconds"]')
+      };
+
+      if (!targetDate) {
+        if (displayEl) displayEl.hidden = true;
+        if (expiredEl) {
+          expiredEl.hidden = false;
+        }
+        return;
+      }
+
+      const render = () => {
+        const now = Date.now();
+        let diffMs = targetDate.getTime() - now;
+
+        if (diffMs <= 0) {
+          diffMs = 0;
+
+          if (valueEls.days) valueEls.days.textContent = '00';
+          if (valueEls.hours) valueEls.hours.textContent = '00';
+          if (valueEls.minutes) valueEls.minutes.textContent = '00';
+          if (valueEls.seconds) valueEls.seconds.textContent = '00';
+
+          if (displayEl) displayEl.hidden = false;
+          if (expiredEl) expiredEl.hidden = false;
+
+          if (hideTimerOnExpiry) {
+            countdownEl.hidden = true;
+          }
+
+          teardown(sectionId);
+          return;
+        }
+
+        const totalSeconds = Math.floor(diffMs / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        if (valueEls.days) valueEls.days.textContent = pad(days);
+        if (valueEls.hours) valueEls.hours.textContent = pad(hours);
+        if (valueEls.minutes) valueEls.minutes.textContent = pad(minutes);
+        if (valueEls.seconds) valueEls.seconds.textContent = pad(seconds);
+
+        if (displayEl) displayEl.hidden = false;
+        if (expiredEl) expiredEl.hidden = true;
+
+        if (hideDaysWhenZero && days === 0) {
+          if (daysUnitEl) daysUnitEl.hidden = true;
+          if (daysSeparatorEl) daysSeparatorEl.hidden = true;
+        } else {
+          if (daysUnitEl) daysUnitEl.hidden = false;
+          if (daysSeparatorEl) daysSeparatorEl.hidden = false;
+        }
+      };
+
+      render();
+      const intervalId = setInterval(render, 1000);
+      registry.set(sectionId, { intervalId });
+    };
+
+    window.__seaCountdownInit = (scope = document) => {
+      scope.querySelectorAll('[data-sea-countdown]').forEach(initializeCountdown);
+    };
+
+    if (!window.__seaCountdownEventsBound) {
+      document.addEventListener('shopify:section:load', (event) => {
+        window.__seaCountdownInit(event.target);
+      });
+
+      document.addEventListener('shopify:section:unload', (event) => {
+        const countdownEl = event.target.querySelector('[data-sea-countdown]');
+        if (countdownEl && countdownEl.dataset.sectionId) {
+          teardown(countdownEl.dataset.sectionId);
+        }
+      });
+
+      window.__seaCountdownEventsBound = true;
+    }
+
+    window.__seaCountdownInit(document);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "BOGO Promo Countdown",
+  "tag": "section",
+  "class": "sea-bundle-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Promotion content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Promotion heading",
+      "default": "BOGO FREE | 2 Wigs=$99"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_countdown",
+      "label": "Enable countdown timer",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Countdown target"
+    },
+    {
+      "type": "text",
+      "id": "countdown_end_date",
+      "label": "Countdown end date",
+      "info": "Use YYYY-MM-DD format, for example 2026-12-31",
+      "default": "2026-12-31",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "text",
+      "id": "countdown_end_time",
+      "label": "Countdown end time",
+      "info": "Use 24-hour HH:MM format, for example 23:59",
+      "default": "23:59",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "text",
+      "id": "timezone_label",
+      "label": "Timezone label",
+      "default": "Timer uses your local browser time",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "header",
+      "content": "Countdown labels",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "text",
+      "id": "days_label",
+      "label": "Days label",
+      "default": "Days",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "text",
+      "id": "hours_label",
+      "label": "Hours label",
+      "default": "Hours",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "text",
+      "id": "minutes_label",
+      "label": "Minutes label",
+      "default": "Minutes",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "text",
+      "id": "seconds_label",
+      "label": "Seconds label",
+      "default": "Seconds",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "header",
+      "content": "Countdown style and expiry",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "color",
+      "id": "timer_background_color",
+      "label": "Timer background color",
+      "default": "#f233d2",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "color",
+      "id": "timer_text_color",
+      "label": "Timer text color",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "text",
+      "id": "expired_message",
+      "label": "Expired message",
+      "default": "This promotion has ended.",
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_days_when_zero",
+      "label": "Hide days when zero",
+      "default": true,
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_timer_on_expiry",
+      "label": "Hide whole timer after expiry",
+      "default": false,
+      "visible_if": "{{ section.settings.enable_countdown }}"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "VIEW ALL"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Space between cards",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_slider",
+      "label": "Enable mobile swipe slider",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading colour",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product-title colour",
+      "default": "#111111"
+    },
+    {
+      "type": "color_background",
+      "id": "overlay_background",
+      "label": "Overlay background",
+      "default": "rgba(15,15,15,0.82)"
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "Overlay text colour",
+      "default": "#c3e8c7"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bundle",
+      "name": "Bundle deal",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Bundle product"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom collage image",
+          "info": "Recommended size: 1200 × 1500 px"
+        },
+        {
+          "type": "text",
+          "id": "overlay_heading",
+          "label": "Overlay heading",
+          "default": "BUNDLE DEAL"
+        },
+        {
+          "type": "text",
+          "id": "overlay_subtitle",
+          "label": "Overlay subtitle",
+          "default": "SEA BALI STRAIGHT"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sale_badge",
+          "label": "Show sale badge",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "sale_label",
+          "label": "Sale badge text",
+          "default": "Sale"
+        },
+        {
+          "type": "header",
+          "content": "Manual product fallback"
+        },
+        {
+          "type": "text",
+          "id": "custom_product_title",
+          "label": "Manual product title"
+        },
+        {
+          "type": "url",
+          "id": "custom_link",
+          "label": "Manual product link"
+        },
+        {
+          "type": "number",
+          "id": "custom_price",
+          "label": "Manual sale price"
+        },
+        {
+          "type": "number",
+          "id": "custom_compare_price",
+          "label": "Manual original price"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BOGO Promo Countdown",
+      "blocks": [
+        {
+          "type": "bundle",
+          "settings": {
+            "overlay_heading": "BUNDLE DEAL",
+            "overlay_subtitle": "SEA BALI STRAIGHT"
+          }
+        },
+        {
+          "type": "bundle",
+          "settings": {
+            "overlay_heading": "BUNDLE DEAL",
+            "overlay_subtitle": "SEA KINKY STRAIGHT"
+          }
+        },
+        {
+          "type": "bundle",
+          "settings": {
+            "overlay_heading": "BUNDLE DEAL",
+            "overlay_subtitle": "SEA ZEN STRAIGHT"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

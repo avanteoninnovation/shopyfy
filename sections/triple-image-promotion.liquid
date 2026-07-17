@@ -1,0 +1,422 @@
+{% liquid
+  assign loading = 'lazy'
+  assign fetch_priority = 'auto'
+
+  if section.index == 1
+    assign loading = 'eager'
+    assign fetch_priority = 'high'
+  endif
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section
+  id="triple-image-promotion-{{ section.id }}"
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-testid="triple-image-promotion-{{ section.id }}"
+>
+  {% if section.settings.heading != blank %}
+    <h2
+      class="triple-image-promotion__heading"
+      style="text-align: {{ section.settings.heading_alignment }};"
+    >
+      {{ section.settings.heading | escape }}
+    </h2>
+  {% endif %}
+
+  <div class="triple-image-promotion__cards triple-image-promotion__cards--{{ section.settings.mobile_layout }}">
+    {% for block in section.blocks limit: 3 %}
+      {% liquid
+        assign desktop_image = block.settings.desktop_image
+        assign mobile_image = block.settings.mobile_image | default: desktop_image
+        assign render_image = desktop_image | default: mobile_image
+        assign image_alt = block.settings.image_alt | default: render_image.alt | default: ''
+        assign link_label = block.settings.link_label | default: image_alt | default: 'Promotional image'
+      %}
+
+      <article
+        class="triple-image-promotion__card"
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.link != blank %}
+          <a
+            class="triple-image-promotion__media-link"
+            href="{{ block.settings.link }}"
+            aria-label="{{ link_label | escape }}"
+          >
+        {% else %}
+          <div class="triple-image-promotion__media-link">
+        {% endif %}
+
+        {% if block.settings.show_sale_badge and block.settings.sale_badge_text != blank %}
+          <span class="triple-image-promotion__badge">
+            {{ block.settings.sale_badge_text | escape }}
+          </span>
+        {% endif %}
+
+        {% if render_image != blank %}
+          <picture class="triple-image-promotion__picture">
+            {% if mobile_image != blank %}
+              <source
+                media="(max-width: 749px)"
+                srcset="
+                  {{ mobile_image | image_url: width: 480 }} 480w,
+                  {{ mobile_image | image_url: width: 720 }} 720w,
+                  {{ mobile_image | image_url: width: 900 }} 900w,
+                  {{ mobile_image | image_url: width: 1200 }} 1200w
+                "
+                sizes="85vw"
+                width="{{ mobile_image.width }}"
+                height="{{ mobile_image.height }}"
+              >
+            {% endif %}
+
+            {{
+              render_image
+              | image_url: width: 2000
+              | image_tag:
+                widths: '500, 700, 900, 1200, 1600, 2000',
+                sizes: '(min-width: 750px) 33vw, 85vw',
+                width: render_image.width,
+                height: render_image.height,
+                alt: image_alt,
+                class: 'triple-image-promotion__image',
+                loading: loading,
+                fetchpriority: fetch_priority
+            }}
+          </picture>
+        {% else %}
+          <div class="triple-image-promotion__placeholder" aria-hidden="true">
+            {{ 'image' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+
+        {% if block.settings.link != blank %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+{% style %}
+  #triple-image-promotion-{{ section.id }} {
+    --triple-desktop-gap: {{ section.settings.desktop_gap }}px;
+    --triple-mobile-gap: {{ section.settings.mobile_gap }}px;
+    --triple-desktop-height: {{ section.settings.desktop_image_height }}px;
+    --triple-mobile-height: {{ section.settings.mobile_image_height }}px;
+    --triple-desktop-fit: {{ section.settings.desktop_image_fit }};
+  }
+
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__heading {
+    margin: 0 0 20px;
+  }
+
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--triple-desktop-gap);
+  }
+
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__card {
+    min-width: 0;
+  }
+
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__media-link {
+    position: relative;
+    display: block;
+    height: var(--triple-desktop-height);
+    text-decoration: none;
+    overflow: hidden;
+  }
+
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__picture,
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__image,
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__image {
+    object-fit: var(--triple-desktop-fit);
+    object-position: center;
+  }
+
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__placeholder svg {
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--color-foreground-rgb), 0.06);
+  }
+
+  #triple-image-promotion-{{ section.id }} .triple-image-promotion__badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    display: inline-block;
+    padding: 8px 10px;
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  @media screen and (max-width: 749px) {
+    #triple-image-promotion-{{ section.id }} .triple-image-promotion__cards {
+      gap: var(--triple-mobile-gap);
+    }
+
+    #triple-image-promotion-{{ section.id }} .triple-image-promotion__media-link {
+      height: var(--triple-mobile-height);
+    }
+
+    #triple-image-promotion-{{ section.id }} .triple-image-promotion__image {
+      object-fit: cover;
+    }
+
+    #triple-image-promotion-{{ section.id }} .triple-image-promotion__cards--swipe {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-left: var(--triple-mobile-gap);
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+
+    #triple-image-promotion-{{ section.id }} .triple-image-promotion__cards--swipe::-webkit-scrollbar {
+      display: none;
+    }
+
+    #triple-image-promotion-{{ section.id }} .triple-image-promotion__cards--swipe .triple-image-promotion__card {
+      flex: 0 0 85%;
+      scroll-snap-align: start;
+    }
+
+    #triple-image-promotion-{{ section.id }} .triple-image-promotion__cards--stack {
+      grid-template-columns: 1fr;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Triple image promotion",
+  "tag": "section",
+  "class": "section-triple-image-promotion",
+  "max_blocks": 3,
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page"
+        },
+        {
+          "value": "full-width",
+          "label": "Full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "range",
+      "id": "desktop_gap",
+      "label": "Desktop gap",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Mobile gap",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_height",
+      "label": "Desktop image height",
+      "min": 320,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 620
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "label": "Mobile image height",
+      "min": 220,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "select",
+      "id": "desktop_image_fit",
+      "label": "Desktop image fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        {
+          "value": "swipe",
+          "label": "Horizontal swipe"
+        },
+        {
+          "value": "stack",
+          "label": "Stacked"
+        }
+      ],
+      "default": "swipe"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promo_image",
+      "name": "Promotional image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image (optional)"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sale_badge",
+          "label": "Enable sale badge",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "sale_badge_text",
+          "label": "Sale badge text",
+          "default": "Sale"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Accessible link label (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Triple image promotion",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "promo_image"
+        },
+        {
+          "type": "promo_image"
+        },
+        {
+          "type": "promo_image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
